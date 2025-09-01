@@ -57,7 +57,6 @@ def createTables():
                    product_name VARCHAR(255),
                    stock INT,
                    price FLOAT,
-                   product_name VARCHAR(255),
                    user_id VARCHAR(255),
                    user_name VARCHAR(255)
                    )
