@@ -1,7 +1,7 @@
 from flask import Flask, jsonify, request
 from createTableOperation import createTables
 from addOperation import create_user
-from readOperation import authenticate_user
+from readOperation import authenticate_user, getAllUsers, getSpecificUser
 
 app = Flask(__name__)
 
@@ -29,7 +29,7 @@ def create_user():
             pinCode=pinCode
         )
 
-        return jsonify({'message' : str(userId), 'status' : 400})
+        return jsonify({'message' : str(userId), 'status' : 200})
     
     except Exception as error:
         return jsonify({'message' : str(error), 'status' : 400})
@@ -49,6 +49,32 @@ def login():
             return jsonify({'message': "invalid email or password", 'status' : 400})
     except Exception as error:
         return error
+    
+
+@app.route('/getAllUsers', methods = ['GET'])
+def get_all_users():
+
+    try:
+        return jsonify(getAllUsers())
+    
+    except Exception as error:
+        return jsonify({'message': str(error), 'status' : 400})
+    
+
+@app.route('/getSpecificUser', methods = ['POST'])
+def get_specific_user():
+
+    try:
+        userId = request.form['user_id']
+
+        user = getSpecificUser(userId=userId)
+        return jsonify(user)
+
+    except Exception as error:
+        return jsonify({'message' : str(error), 'status' : 400})
+
+
+
 
         
 
