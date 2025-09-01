@@ -2,6 +2,7 @@ from flask import Flask, jsonify, request
 from createTableOperation import createTables
 from addOperation import create_user
 from readOperation import authenticate_user, getAllUsers, getSpecificUser
+from updateOperation import approve_user
 
 app = Flask(__name__)
 
@@ -74,7 +75,20 @@ def get_specific_user():
         return jsonify({'message' : str(error), 'status' : 400})
 
 
+@app.route('/approveUser', methods = ['PATCH'])
+def approve_user():
 
+    try:
+        user_id = request.form['user_id']
+        isApprove = request.form['isApproved']
+
+        update = approve_user(userID = user_id, isApprove = isApprove)
+
+        return jsonify({'message': "user Approved", 'status' :200})
+
+
+    except Exception as error:
+        return jsonify({'message' : str(error), 'status' : 400})
 
         
 
