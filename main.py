@@ -2,7 +2,8 @@ from flask import Flask, jsonify, request
 from createTableOperation import createTables
 from addOperation import create_user
 from readOperation import authenticate_user, getAllUsers, getSpecificUser
-from updateOperation import approve_user
+from updateOperation import approve_user, update_user_details
+from deleteOperation import delete_specificUser
 
 app = Flask(__name__)
 
@@ -89,7 +90,45 @@ def approve_user():
 
     except Exception as error:
         return jsonify({'message' : str(error), 'status' : 400})
+    
 
+@app.route('/updateUserDetails', methods = ['PATCH'])
+def update_userDetails():
+
+    try:
+
+        user_id = request.form['user_id']
+
+        updateUser = {}
+
+        for key, value in request.form.items():
+            if key != 'user_id':
+                updateUser[key] = value
+
+        update_user_details(userId=user_id, **updateUser)
+
+        return jsonify({'message': "user update successfully", 'status' :200})
+
+
+    except Exception as error:
+        return jsonify({'message': str(error), 'status' :400})
+    
+
+
+@app.route('/deleteSpecificUser', methods = ['DELETE'])
+def delete_specific_user():
+
+    try:
+
+        userId = request.form['userId']
+
+        delete_specificUser(userId = userId)
+
+        return jsonify({'message': "user deleted successfully", 'status' :200})
+
+
+    except Exception as error:
+        return jsonify({'message': str(error), 'status' :400})
         
 
 if __name__ == '__main__':
